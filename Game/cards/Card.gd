@@ -5,7 +5,7 @@ export(String, FILE, "*.png") var card_texture = "res://assets/sprites/cards/abs
 
 var pressed = false
 var id = 0
-
+var enabled = false #si se permite hacer click o no
 #referencias a nodos
 onready var textura = $textura
 onready var animator = $AnimationPlayer
@@ -34,7 +34,7 @@ func _ready():
 
 
 func _on_textura_mouse_entered():
-	if !pressed:
+	if !pressed and enabled:
 		audio.stream = shove_sounds[randi() % shove_sounds.size()]
 		audio.volume_db = 0
 		audio.play()
@@ -42,7 +42,7 @@ func _on_textura_mouse_entered():
 
 
 func _on_textura_mouse_exited():
-	if !pressed:
+	if !pressed and enabled:
 		audio.stream = shove_sounds[randi() % shove_sounds.size()]
 		audio.volume_db = -10
 		audio.play()
@@ -50,7 +50,7 @@ func _on_textura_mouse_exited():
 
 
 func _on_textura_pressed():
-	if !pressed:
+	if !pressed and enabled:
 		audio.stream = place_sounds[randi() % place_sounds.size()]
 		audio.volume_db = 10
 		audio.play()

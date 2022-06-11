@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/auchh.mp3-79c7c3ac705d657e0230095af121c935.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/player/auchh.mp3"
+dest_files=[ "res://.import/auchh.mp3-79c7c3ac705d657e0230095af121c935.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

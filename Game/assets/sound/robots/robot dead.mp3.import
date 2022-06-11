@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/robot dead.mp3-77031793b70d0a3cf0bc577ae61c4772.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/robots/robot dead.mp3"
+dest_files=[ "res://.import/robot dead.mp3-77031793b70d0a3cf0bc577ae61c4772.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

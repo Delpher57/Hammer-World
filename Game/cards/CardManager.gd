@@ -17,6 +17,7 @@ var primera_vez = true
 #id para identificar cartas
 var last_id = 1
 
+var in_turno = false
 #referencias a nodos
 onready var cards_node = $cards
 onready var tween = $Tween
@@ -240,6 +241,16 @@ func get_card_node(id):
 				return n
 	return null
 
+func disable_cards():
+	for n in cards_node.get_children():
+		if n.name != "Position2D" and n.name != "mazo":
+			n.enabled = false
+
+func enable_cards():
+	for n in cards_node.get_children():
+		if n.name != "Position2D" and n.name != "mazo":
+			n.enabled = true
+
 func find_card_by_id(id):
 	var index = 0
 	for carta in mazo_cartas:
@@ -248,22 +259,29 @@ func find_card_by_id(id):
 		index += 1
 
 func click_carta(id):
-	var card_index = find_card_by_id(id)
-	var carta = mazo_cartas[card_index] #carta que seleccionamos
-	
-	battle_manager.turno(carta)
-	
-	yield(get_tree().create_timer(1.0), "timeout")
-	#quitamos la carta de los nodos
-	var card_node = get_card_node(id)
-	if card_node != null:
-		cards_node.remove_child(card_node)
-		card_node.queue_free()
-	
-	#la sacamos del mazo y metemos una nueva
-	mazo_cartas.pop_at(card_index)
-	mazo_cartas.push_back(get_carta())
-	update_cards(mazo_cartas)
+	if !in_turno:
+		in_turno = true
+		disable_cards()
+		var card_index = find_card_by_id(id)
+		var carta = mazo_cartas[card_index] #carta que seleccionamos
+		
+		battle_manager.turno(carta)
+		
+		yield(get_tree().create_timer(1), "timeout")
+		#quitamos la carta de los nodos
+		var card_node = get_card_node(id)
+		if card_node != null:
+			cards_node.remove_child(card_node)
+			card_node.queue_free()
+		
+		#la sacamos del mazo y metemos una nueva
+		mazo_cartas.pop_at(card_index)
+		mazo_cartas.push_back(get_carta())
+		update_cards(mazo_cartas)
+		yield(get_tree().create_timer(1.5), "timeout")
+		enable_cards()
+		in_turno = false
+
 
 func _ready():
 	Transition.fade_out()
@@ -271,6 +289,7 @@ func _ready():
 	#rellenamos el mazo con 4 cartas
 	mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
 	update_cards(mazo_cartas)
+	enable_cards()
 
 
 

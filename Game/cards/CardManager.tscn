@@ -327,7 +327,7 @@ expand = true
 stretch_mode = 4
 
 [node name="noice" parent="." instance=ExtResource( 3 )]
-frame = 0
+frame = 2
 
 [node name="music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )

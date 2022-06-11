@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/sprites/protagonista/body.png" type="Texture" id=1]
 [ext_resource path="res://assets/sprites/protagonista/brazo_2.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/gui/bar bar.png" type="Texture" id=8]
 [ext_resource path="res://effects/bubble.tscn" type="PackedScene" id=9]
 [ext_resource path="res://player/player.gd" type="Script" id=10]
+[ext_resource path="res://assets/sound/player/auchh.mp3" type="AudioStream" id=11]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -156,6 +157,106 @@ tracks/11/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0.0 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("cara:modulate")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "damage"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("cara:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 2, 18 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("brazo2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 44, 45 ), Vector2( 44, 36 ), Vector2( 44, 45 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("brazo2:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -29.5046, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("brazo1:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 33.3429, 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("brazo1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -63, 42 ), Vector2( -57, 33 ), Vector2( -63, 42 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("cuerpo:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -15, 63 ), Vector2( -15, 76 ), Vector2( -15, 63 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("cara:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.835294, 0.803922, 0.772549, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -333,6 +434,7 @@ texture = ExtResource( 5 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 anims/RESET = SubResource( 1 )
+anims/damage = SubResource( 3 )
 anims/idle = SubResource( 2 )
 
 [node name="lifebar" type="TextureProgress" parent="."]
@@ -346,9 +448,14 @@ rounded = true
 texture_under = ExtResource( 6 )
 texture_over = ExtResource( 7 )
 texture_progress = ExtResource( 8 )
-fill_mode = 6
 
 [node name="bubble" parent="." instance=ExtResource( 9 )]
 position = Vector2( -35, -176 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = 5.0
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="bubble"]

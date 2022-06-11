@@ -1,7 +1,9 @@
 extends Node2D
 
 
-var vida = 15
+
+var full_vida = 15
+var vida
 var dificultad = 0 #valor minimo que puede sacar en una tirada
 
 #texturas de la cara
@@ -16,6 +18,8 @@ func roll_attack():
 	return roll
 
 func _ready():
+	vida = full_vida
+	
 	var path = "res://assets/sprites/enemigos/caras/"
 	var dir = Directory.new()
 	dir.open(path)
@@ -34,6 +38,7 @@ func _ready():
 	
 	yield(get_tree().create_timer(rand_range(0,1)), "timeout")
 	$AnimationPlayer.play("idle")
+	$lifebar.value = 100
 
 func attack():
 	var tirada = roll_attack()
@@ -43,3 +48,18 @@ func attack():
 
 func end_attack():
 	$bubble.disapear()
+
+func damage(damage):
+	vida -= damage
+	var porcentage = (float(vida)/float(full_vida))*100.0
+	$lifebar.value = porcentage
+	$AudioStreamPlayer.play()
+	$AnimationPlayer.play("damage")
+	
+
+func die():
+	$AnimationPlayer.play("die")
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "damage":
+		$AnimationPlayer.play("idle")
