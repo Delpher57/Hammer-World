@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Nice place in PA Wastland.ogg-290af8259e2f4c78de304a73b2a3b599.oggstr"
+
+[deps]
+
+source_file="res://assets/music/Nice place in PA Wastland.ogg"
+dest_files=[ "res://.import/Nice place in PA Wastland.ogg-290af8259e2f4c78de304a73b2a3b599.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

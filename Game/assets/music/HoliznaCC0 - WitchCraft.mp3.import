@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/HoliznaCC0 - WitchCraft.mp3-fa4b11dca512af167cfdbb02d6e2a9f5.mp3str"
+
+[deps]
+
+source_file="res://assets/music/HoliznaCC0 - WitchCraft.mp3"
+dest_files=[ "res://.import/HoliznaCC0 - WitchCraft.mp3-fa4b11dca512af167cfdbb02d6e2a9f5.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

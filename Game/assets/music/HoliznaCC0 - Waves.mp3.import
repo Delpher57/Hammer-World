@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/HoliznaCC0 - Waves.mp3-d92a8ef862bad5ad8985d80125a7b5fe.mp3str"
+
+[deps]
+
+source_file="res://assets/music/HoliznaCC0 - Waves.mp3"
+dest_files=[ "res://.import/HoliznaCC0 - Waves.mp3-d92a8ef862bad5ad8985d80125a7b5fe.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

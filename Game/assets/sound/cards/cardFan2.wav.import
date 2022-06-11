@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/cardFan2.wav-2630b0117c20b0fac2e5cabe5ec45dbe.sample"
+
+[deps]
+
+source_file="res://assets/sound/cards/cardFan2.wav"
+dest_files=[ "res://.import/cardFan2.wav-2630b0117c20b0fac2e5cabe5ec45dbe.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
