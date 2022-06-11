@@ -87,3 +87,4 @@ anims/play = SubResource( 4 )
 [connection signal="mouse_entered" from="textura" to="." method="_on_textura_mouse_entered"]
 [connection signal="mouse_exited" from="textura" to="." method="_on_textura_mouse_exited"]
 [connection signal="pressed" from="textura" to="." method="_on_textura_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

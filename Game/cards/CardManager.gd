@@ -12,9 +12,15 @@ var cartas_legendarias = []
 
 #escena de la carta
 var Carta = preload("res://cards/Card.tscn")
+var primera_vez = true
+
+#id para identificar cartas
+var last_id = 1
 
 #referencias a nodos
 onready var cards_node = $cards
+onready var tween = $Tween
+onready var battle_manager = $BattleManager
 
 #se encarga de rellenar los valores internos de las cartas
 func inicializar_carta(nombre, textura, puntos, healing, full_damage):
@@ -31,6 +37,19 @@ func inicializar_carta(nombre, textura, puntos, healing, full_damage):
 	carta.fulldamage = full_damage
 	return carta
 
+func get_unique_card(template):
+	var carta = {
+	"nombre": "",
+	"textura": "",
+	"puntos": 0, "healing": 0,
+	"fulldamage": 0}
+	
+	carta.nombre = template.nombre
+	carta.textura = template.textura
+	carta.puntos = template.puntos
+	carta.healing = template.healing
+	carta.fulldamage = template.fulldamage
+	return carta
 
 #inicializamos las cartas
 # y las guardamos en un array con su propio tipo
@@ -140,6 +159,12 @@ func rellenar_cartas():
 
 	cartas_legendarias = [milagro,zeus]
 
+#obtenemos un id nuevo unico para la carta
+func get_id():
+	var id = last_id +2
+	last_id = id
+	return id
+
 #obtenemos una carta aleatoria
 func get_carta():
 	
@@ -147,7 +172,7 @@ func get_carta():
 	var prob_verde = [0,40]
 	var prob_rojo = [40,65]
 	var prob_azul = [65,80]
-	var prob_morado = [80,95]
+	var prob_morado = [80,98]
 	var prob_leg = [95,100]
 	
 	randomize()
@@ -170,25 +195,78 @@ func get_carta():
 	else:
 		carta = cartas_legendarias[randi() % cartas_legendarias.size()]
 	
+	carta = get_unique_card(carta)
+	carta.id = get_id()
 	return carta
 
 func update_cards(mazo):
-	#limpiamos las cartas en caso de reiniciar
+
+	
+	var last_position = cards_node.get_node("Position2D").global_position
+	#iteramos por todas las cartas
+	var debug = []
+	for i in mazo:
+		debug.push_back(i.id)
+		#verificamos si el nodo de esa carta ya existe, si no la creamos
+		var carta = get_card_node(i.id)
+		if carta == null:
+			carta = Carta.instance()
+			carta.card_texture = i.textura
+			carta.id = i.id
+			cards_node.add_child(carta)
+			#que la posicion inicial sea dentro del maso
+			carta.global_position = cards_node.get_node("mazo").rect_position
+			carta.connect("click_carta", self, "click_carta")
+		
+		
+		#movemos las cartas
+		if primera_vez:
+			carta.global_position = last_position
+		else:
+			$Tween.interpolate_property(carta, "global_position",
+				carta.global_position, last_position, 1,
+				Tween.TRANS_EXPO, Tween.EASE_OUT)
+			$Tween.start()
+			$sound.play()
+		last_position.x += carta.textura.rect_size.x + 23 #ancho + espacing
+	primera_vez = false
+	print(debug)
+
+#obtenemos el nodo de una carta
+func get_card_node(id):
 	for n in cards_node.get_children():
 		if n.name != "Position2D" and n.name != "mazo":
-			cards_node.remove_child(n)
-			n.queue_free()
-	var last_position = cards_node.get_node("Position2D").global_position
-	for i in mazo:
-		var carta = Carta.instance()
-		print(i)
-		carta.card_texture = i.textura
-		cards_node.add_child(carta)
-		carta.global_position = last_position
-		last_position.x += carta.textura.rect_size.x + 23 #ancho + espacing
+			if n.id == id:
+				return n
+	return null
 
+func find_card_by_id(id):
+	var index = 0
+	for carta in mazo_cartas:
+		if carta.id == id:
+			return index
+		index += 1
+
+func click_carta(id):
+	var card_index = find_card_by_id(id)
+	var carta = mazo_cartas[card_index] #carta que seleccionamos
+	
+	battle_manager.turno(carta)
+	
+	yield(get_tree().create_timer(1.0), "timeout")
+	#quitamos la carta de los nodos
+	var card_node = get_card_node(id)
+	if card_node != null:
+		cards_node.remove_child(card_node)
+		card_node.queue_free()
+	
+	#la sacamos del mazo y metemos una nueva
+	mazo_cartas.pop_at(card_index)
+	mazo_cartas.push_back(get_carta())
+	update_cards(mazo_cartas)
 
 func _ready():
+	Transition.fade_out()
 	rellenar_cartas()
 	#rellenamos el mazo con 4 cartas
 	mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
@@ -196,6 +274,7 @@ func _ready():
 
 
 
+#debig para cambiar las cartas
 func _on_textura_pressed():
 	mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
 	update_cards(mazo_cartas)

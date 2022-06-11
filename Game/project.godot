@@ -13,13 +13,16 @@ config_version=4
 config/name="HammerWorld"
 run/main_scene="res://menu.tscn"
 boot_splash/image="res://assets/delpher.png"
-config/icon="res://icon.png"
+config/icon="res://assets/sprites/icono.png"
+
+[autoload]
+
+Transition="*res://TRANSITION.tscn"
 
 [display]
 
 window/size/width=1920
 window/size/height=1080
-window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
