@@ -156,7 +156,7 @@ func rellenar_cartas():
 									"res://assets/sprites/cards/Zeus.png",
 									12,
 									0,
-									10)
+									7)
 
 	cartas_legendarias = [milagro,zeus]
 

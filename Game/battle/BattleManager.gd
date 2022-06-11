@@ -30,12 +30,13 @@ func randomize_bubble():
 
 func move_enemies():
 	var last_pos = $enemy_start_pos.position
-	for i in enemies:
-		$Tween.interpolate_property(i, "position",
-				i.position, last_pos, 1,
-				Tween.TRANS_EXPO, Tween.EASE_OUT)
-		$Tween.start()
-		last_pos.x += 127 + 10 #tamaño + margen
+	if enemies.size() > 0:
+		for i in enemies:
+			$Tween.interpolate_property(i, "position",
+					i.position, last_pos, 1,
+					Tween.TRANS_EXPO, Tween.EASE_OUT)
+			$Tween.start()
+			last_pos.x += 127 + 10 #tamaño + margen
 		
 
 
@@ -49,8 +50,26 @@ func turno(carta):
 	randomize_bubble()
 	yield(get_tree().create_timer(1.1), "timeout")
 	var diferencia = carta.puntos - enemy_roll
+	#bonus de carta real
+	if carta.nombre == "real" and (player.vida/player.full_vida) < 0.25:
+		diferencia+=1
 	$bubble.set_number(abs(diferencia))
 	yield(get_tree().create_timer(0.7), "timeout")
+	
+	#le quitamos todo el daño a la carta curativa
+	if carta.nombre == "curativo" and diferencia > 0:
+		diferencia = 0
+	
+	if carta.healing != 0:
+		player.curar(carta.healing)
+	
+	#carta atomica, 30% de prob de lastimarse
+	if carta.nombre == "atomico":
+		randomize()
+		var porcentage = rand_range(0,100)
+		if porcentage > 30:
+			player.damage(3)
+	
 	
 	#gana el enemigo
 	if diferencia < 0:
@@ -58,7 +77,7 @@ func turno(carta):
 		yield(get_tree().create_timer(0.3), "timeout")
 		player.damage(abs(diferencia))
 		yield(get_tree().create_timer(0.1), "timeout")
-		enemies[0].end_attack()
+		
 		
 	#gana el jugador
 	elif diferencia > 0:
@@ -71,13 +90,30 @@ func turno(carta):
 			enemies.pop_front()
 			move_enemies()
 			yield(get_tree().create_timer(0.1), "timeout")
-			player.end_attack()
+			
+	#manejamos el daño multiple
+	if carta.fulldamage != 0:
+		var primera_vez = true
+		var deads = []
+		for i in enemies:
+			if !primera_vez:
+				i.damage(carta.fulldamage)
+				if i.vida <= 0:
+					deads.append(i)
+			primera_vez = false
+		for i in deads:
+			i.die()
+			yield(get_tree().create_timer(0.5), "timeout")
+			enemies.pop_front()
+			move_enemies()
+			yield(get_tree().create_timer(0.1), "timeout")
 	
-	if enemies[0].vida > 0 and player.vida > 0:
-		yield(get_tree().create_timer(0.1), "timeout")
-		player.end_attack()
-		enemies[0].end_attack()
-		$bubble.disapear()
+	
+	yield(get_tree().create_timer(0.1), "timeout")
+	if player.vida > 0: player.end_attack()
+	if enemies.size() > 0:
+		if enemies[0].vida > 0: enemies[0].end_attack()
+	$bubble.disapear()
 	
 	
 

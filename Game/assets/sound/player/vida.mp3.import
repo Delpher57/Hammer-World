@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/vida.mp3-0b9268c47cc28a72d5f224ccc48cf7bf.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/player/vida.mp3"
+dest_files=[ "res://.import/vida.mp3-0b9268c47cc28a72d5f224ccc48cf7bf.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

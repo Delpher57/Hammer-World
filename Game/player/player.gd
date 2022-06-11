@@ -20,9 +20,17 @@ func damage(damage):
 	vida -= damage
 	var porcentage = (float(vida)/float(full_vida))*100.0
 	$lifebar.value = porcentage
-	print(vida,full_vida,porcentage)
 	$AudioStreamPlayer.play()
 	$AnimationPlayer.play("damage")
+
+func curar(puntos):
+	vida += puntos
+	if vida > full_vida:
+		vida = full_vida
+	var porcentage = (float(vida)/float(full_vida))*100.0
+	$lifebar.value = porcentage
+	$AnimationPlayer.play("curar")
+	$vida.play()
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "damage":

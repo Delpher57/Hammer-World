@@ -2,7 +2,7 @@ extends Node2D
 
 
 
-var full_vida = 15
+var full_vida = 20
 var vida
 var dificultad = 0 #valor minimo que puede sacar en una tirada
 

@@ -34,7 +34,7 @@ func _ready():
 
 
 func _on_textura_mouse_entered():
-	if !pressed and enabled:
+	if !pressed:
 		audio.stream = shove_sounds[randi() % shove_sounds.size()]
 		audio.volume_db = 0
 		audio.play()
@@ -42,7 +42,7 @@ func _on_textura_mouse_entered():
 
 
 func _on_textura_mouse_exited():
-	if !pressed and enabled:
+	if !pressed:
 		audio.stream = shove_sounds[randi() % shove_sounds.size()]
 		audio.volume_db = -10
 		audio.play()
