@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/sprites/cards/absorber.png" type="Texture" id=1]
 [ext_resource path="res://cards/Card.gd" type="Script" id=2]
@@ -50,6 +50,22 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -147 ) ]
 }
 
+[sub_resource type="Animation" id=4]
+resource_name = "play"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("textura:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 0.5, 0.5 ),
+"update": 0,
+"values": [ Vector2( 0, -147 ), Vector2( 0, -219 ) ]
+}
+
 [node name="Card" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -64,8 +80,10 @@ stretch_mode = 4
 anims/RESET = SubResource( 3 )
 anims/down = SubResource( 1 )
 anims/elevate = SubResource( 2 )
+anims/play = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="mouse_entered" from="textura" to="." method="_on_textura_mouse_entered"]
 [connection signal="mouse_exited" from="textura" to="." method="_on_textura_mouse_exited"]
+[connection signal="pressed" from="textura" to="." method="_on_textura_pressed"]

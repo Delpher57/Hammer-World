@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://cards/AudioStreamPlayer.gd" type="Script" id=1]
 [ext_resource path="res://assets/music/HoliznaCC0 - Exploring Tomorrow Part 1.mp3" type="AudioStream" id=2]
 [ext_resource path="res://assets/sprites/miniatura.png" type="Texture" id=3]
 [ext_resource path="res://assets/sprites/Logo.png" type="Texture" id=4]
 [ext_resource path="res://assets/logo2w.png" type="Texture" id=5]
+[ext_resource path="res://assets/gui/Play.png" type="Texture" id=6]
+[ext_resource path="res://assets/gui/-Play-.png" type="Texture" id=7]
+[ext_resource path="res://menu.gd" type="Script" id=8]
 
 [sub_resource type="Shader" id=2]
 code = "/*
@@ -262,6 +265,7 @@ shader_param/vignette_intensity = 0.4
 shader_param/vignette_opacity = 0.363
 
 [node name="menu" type="Node2D"]
+script = ExtResource( 8 )
 
 [node name="fondo" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -298,4 +302,14 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_left = 659.0
+margin_top = 542.0
+margin_right = 1318.0
+margin_bottom = 808.0
+texture_normal = ExtResource( 6 )
+texture_hover = ExtResource( 7 )
+stretch_mode = 3
+
 [connection signal="finished" from="music" to="music" method="_on_AudioStreamPlayer_finished"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

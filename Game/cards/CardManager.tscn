@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/grain/7.png" type="Texture" id=8]
 [ext_resource path="res://assets/grain/5.png" type="Texture" id=9]
 [ext_resource path="res://battle/BattleManager.tscn" type="PackedScene" id=10]
-[ext_resource path="res://assets/sprites/overlay juego.png" type="Texture" id=11]
+[ext_resource path="res://assets/sprites/overlay juego bluw.png" type="Texture" id=11]
 [ext_resource path="res://assets/sprites/cards/parte_atras.png" type="Texture" id=12]
 [ext_resource path="res://assets/music/HoliznaCC0 - Waves.mp3" type="AudioStream" id=13]
 [ext_resource path="res://cards/AudioStreamPlayer.gd" type="Script" id=14]
@@ -309,7 +309,7 @@ __meta__ = {
 "_gizmo_extents_": 60.4
 }
 
-[node name="textura" type="TextureButton" parent="cards"]
+[node name="mazo" type="TextureButton" parent="cards"]
 margin_left = 1567.0
 margin_top = 839.0
 margin_right = 1837.0
@@ -321,7 +321,7 @@ stretch_mode = 4
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 modulate = Color( 100, 0, 0, 0.619608 )
 frames = SubResource( 1 )
-frame = 2
+frame = 6
 speed_scale = 2.0
 playing = true
 centered = false
@@ -331,7 +331,7 @@ __meta__ = {
 
 [node name="music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
-volume_db = -5.0
+volume_db = -10.0
 autoplay = true
 script = ExtResource( 14 )
 
@@ -348,5 +348,5 @@ __meta__ = {
 [node name="sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 
-[connection signal="pressed" from="cards/textura" to="." method="_on_textura_pressed"]
+[connection signal="pressed" from="cards/mazo" to="." method="_on_textura_pressed"]
 [connection signal="finished" from="music" to="music" method="_on_AudioStreamPlayer_finished"]

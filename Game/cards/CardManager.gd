@@ -173,6 +173,11 @@ func get_carta():
 	return carta
 
 func update_cards(mazo):
+	#limpiamos las cartas en caso de reiniciar
+	for n in cards_node.get_children():
+		if n.name != "Position2D" and n.name != "mazo":
+			cards_node.remove_child(n)
+			n.queue_free()
 	var last_position = cards_node.get_node("Position2D").global_position
 	for i in mazo:
 		var carta = Carta.instance()
