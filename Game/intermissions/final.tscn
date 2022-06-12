@@ -8,6 +8,3 @@ next_level = "res://menu.tscn"
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )
-
-[node name="noice" parent="." index="3"]
-frame = 4

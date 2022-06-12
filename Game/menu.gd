@@ -2,7 +2,7 @@ extends Node2D
 
 func _ready():
 	Transition.connect("transition_finished", self, "transition_finished")
-
+	Transition.fade_out()
 func _on_TextureButton_pressed():
 	$Tween.interpolate_property($music, "volume_db",
 		-5, -50, 1,

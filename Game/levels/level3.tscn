@@ -20,7 +20,7 @@ visible = false
 visible = false
 
 [node name="grain" parent="." index="7"]
-frame = 5
+frame = 1
 
 [node name="music" parent="." index="9"]
 stream = ExtResource( 2 )
