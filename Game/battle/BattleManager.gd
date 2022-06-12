@@ -26,7 +26,6 @@ func _ready():
 
 
 func randomize_bubble():
-	var last_pos = $enemy_start_pos.position
 	for i in range(0,20):
 		var num = randi() % 12 + 1
 		$bubble.set_number(num)
@@ -35,9 +34,9 @@ func randomize_bubble():
 
 func move_enemies():
 	var last_pos = $enemy_start_pos.position
-	if enemies.size() > 0:
+	if enemies.size() != 0:
 		for i in enemies:
-			if i != null:
+			if i != null and is_instance_valid(i):
 				$Tween.interpolate_property(i, "position",
 						i.position, last_pos, 1,
 						Tween.TRANS_EXPO, Tween.EASE_OUT)
@@ -51,8 +50,10 @@ func turno(carta):
 	
 	player.attack(carta.puntos)
 	yield(get_tree().create_timer(0.2), "timeout")
-	var enemy_roll
-	if enemies.size() != 0: enemy_roll = enemies[0].attack()
+	var enemy_roll = 0
+	if enemies.size() != 0:
+		if enemies[0] != null and is_instance_valid(enemies[0]): 
+			enemy_roll = enemies[0].attack()
 	else: enemy_roll = 0
 	yield(get_tree().create_timer(0.5), "timeout")
 	$bubble.appear()
@@ -89,40 +90,45 @@ func turno(carta):
 		
 		
 	#gana el jugador
-	elif diferencia > 0 and enemies.size() != 0:
+	elif diferencia > 0 and enemies.size() != 0 and enemies[0] != null and is_instance_valid(enemies[0]):
 		$AnimationPlayer.play("enemy")
 		yield(get_tree().create_timer(0.3), "timeout")
 		enemies[0].damage(abs(diferencia))
-		if enemies[0].vida <= 0:
-			enemies[0].die()
-			yield(get_tree().create_timer(0.5), "timeout")
-			enemies.pop_front()
-			move_enemies()
-			yield(get_tree().create_timer(0.1), "timeout")
-			
-	#manejamos el daño multiple
+	
+	#daño multiple
 	if carta.fulldamage != 0:
 		var primera_vez = true
-		var deads = []
-		var index = 0
 		for i in enemies:
-			if !primera_vez:
+			if !primera_vez: 
 				i.damage(carta.fulldamage)
-				if i.vida <= 0:
-					deads.append([i,index])
 			primera_vez = false
-		for i in deads:
-			enemies.pop_at(i[1])
-			i[0].die()
+	
+	
+	var to_pop = []
+	for i in enemies:
+		if i.vida <= 0:
+			i.die()
 			yield(get_tree().create_timer(0.5), "timeout")
-			move_enemies()
-			yield(get_tree().create_timer(0.1), "timeout")
+			i.queue_free()
+			remove_child(i)
+			to_pop.append(i)
+		
 	
-	
+	for i in to_pop:
+		var index = 0
+		for j in enemies:
+			
+			if j == i:
+				print(i,j)
+				enemies.pop_at(index)
+			index += 1
+	move_enemies()
+
 	yield(get_tree().create_timer(0.1), "timeout")
-	if player.vida > 0: player.end_attack()
-	if enemies.size() > 0:
-		if enemies[0].vida > 0: enemies[0].end_attack()
+	
+	for i in enemies:
+		if i.bubble.activa:
+			i.end_attack()
 	
 	if enemies.size() == 0:
 		emit_signal("end_of_game","win")
@@ -130,6 +136,9 @@ func turno(carta):
 		emit_signal("end_of_game","lose")
 	
 	$bubble.disapear()
+	for i in enemies:
+		if !is_instance_valid(i) or i == null:
+			remove_child(i)
 	
 	
 

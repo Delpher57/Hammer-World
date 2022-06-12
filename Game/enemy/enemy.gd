@@ -8,13 +8,13 @@ var dificultad = 0 #valor minimo que puede sacar en una tirada
 
 #texturas de la cara
 var pics = []
-
+onready var bubble = $bubble
 
 
 
 func roll_attack():
 	randomize()
-	var roll = int(round(rand_range(1+ dificultad,8 + dificultad))) 
+	var roll = int(round(rand_range(1+ dificultad/2,8 + dificultad))) 
 	return roll
 
 func _ready():

@@ -174,10 +174,10 @@ func get_id():
 func get_carta():
 	
 	#probabilidades de obtener cada tipo de carta
-	var prob_verde = [0,35]
-	var prob_rojo = [35,65]
-	var prob_azul = [65,80]
-	var prob_morado = [80,96]
+	var prob_verde = [0,40]
+	var prob_rojo = [40,60]
+	var prob_azul = [60,85]
+	var prob_morado = [85,95]
 	var prob_leg = [95,100]
 	
 	randomize()

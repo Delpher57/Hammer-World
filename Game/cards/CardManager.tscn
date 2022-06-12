@@ -327,7 +327,7 @@ expand = true
 stretch_mode = 4
 
 [node name="grain" parent="." instance=ExtResource( 3 )]
-frame = 3
+frame = 0
 
 [node name="noice" parent="." instance=ExtResource( 8 )]
 visible = false
