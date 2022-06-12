@@ -206,7 +206,6 @@ func get_carta():
 
 func update_cards(mazo):
 
-	
 	var last_position = cards_node.get_node("Position2D").global_position
 	#iteramos por todas las cartas
 	var debug = []
@@ -228,6 +227,7 @@ func update_cards(mazo):
 		if primera_vez:
 			carta.global_position = last_position
 		else:
+			print(" s")
 			$Tween.interpolate_property(carta, "global_position",
 				carta.global_position, last_position, 1,
 				Tween.TRANS_EXPO, Tween.EASE_OUT)
@@ -307,19 +307,18 @@ func _ready():
 #pedir carta
 func _on_textura_pressed():
 	if cuenta_pedir <= maximo_pedir and !in_turno:
-		randomize()
-		var id = mazo_cartas[randi() % mazo_cartas.size()].id
-		var card_index = find_card_by_id(id)
-		var card_node = get_card_node(id)
-		if card_node != null:
-			cards_node.remove_child(card_node)
-			card_node.queue_free()
-		
-		#la sacamos del mazo y metemos una nueva
-		mazo_cartas.pop_at(card_index)
-		mazo_cartas.push_back(get_carta())
+		for n in cards_node.get_children():
+			if n.name != "Position2D" and n.name != "mazo":
+				cards_node.remove_child(n)
+				n.queue_free()
+			
+		#aumentamos la cuenta
 		cuenta_pedir += 1
 		
-		
+		mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
 		update_cards(mazo_cartas)
+		
 		enable_cards()
+	if cuenta_pedir >= maximo_pedir:
+		cards_node.get_node("mazo").hide()
+	

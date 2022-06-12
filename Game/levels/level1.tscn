@@ -16,7 +16,7 @@ position = Vector2( 1494, 813 )
 texture = ExtResource( 3 )
 
 [node name="grain" parent="." index="8"]
-frame = 1
+frame = 6
 
 [node name="music" parent="." index="10"]
 stream = ExtResource( 2 )
