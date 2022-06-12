@@ -13,4 +13,4 @@ func _on_TextureButton_pressed():
 func transition_finished(anim_name):
 	if anim_name == "fade-in":
 		# warning-ignore:return_value_discarded
-		get_tree().change_scene("res://cards/CardManager.tscn")
+		get_tree().change_scene("res://intermissions/1.tscn")

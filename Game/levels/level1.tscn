@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://cards/CardManager.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/music/HoliznaCC0 - Waves.mp3" type="AudioStream" id=2]
+[ext_resource path="res://assets/gui/5.png" type="Texture" id=3]
+
+[node name="level1" instance=ExtResource( 1 )]
+next_level = "res://intermissions/2.tscn"
+
+[node name="BattleManager" parent="." index="1"]
+num_enemies = 1
+
+[node name="text4" type="Sprite" parent="." index="6"]
+modulate = Color( 1, 1, 1, 0.909804 )
+position = Vector2( 1494, 813 )
+texture = ExtResource( 3 )
+
+[node name="grain" parent="." index="8"]
+frame = 1
+
+[node name="music" parent="." index="10"]
+stream = ExtResource( 2 )

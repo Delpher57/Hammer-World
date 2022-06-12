@@ -14,7 +14,7 @@ var pics = []
 
 func roll_attack():
 	randomize()
-	var roll = int(round(rand_range(1+ dificultad/2,7 + dificultad))) 
+	var roll = int(round(rand_range(1+ dificultad,8 + dificultad))) 
 	return roll
 
 func _ready():

@@ -7,10 +7,10 @@
 [ext_resource path="res://assets/gui/instruccion.png" type="Texture" id=5]
 [ext_resource path="res://assets/gui/mala.png" type="Texture" id=6]
 [ext_resource path="res://assets/gui/tu.png" type="Texture" id=7]
+[ext_resource path="res://effects/black_noice.tscn" type="PackedScene" id=8]
 [ext_resource path="res://battle/BattleManager.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/sprites/overlay juego bluw.png" type="Texture" id=11]
 [ext_resource path="res://assets/sprites/cards/parte_atras.png" type="Texture" id=12]
-[ext_resource path="res://assets/music/HoliznaCC0 - Waves.mp3" type="AudioStream" id=13]
 [ext_resource path="res://cards/AudioStreamPlayer.gd" type="Script" id=14]
 
 [sub_resource type="Shader" id=4]
@@ -326,11 +326,13 @@ texture_normal = ExtResource( 12 )
 expand = true
 stretch_mode = 4
 
-[node name="noice" parent="." instance=ExtResource( 3 )]
-frame = 2
+[node name="grain" parent="." instance=ExtResource( 3 )]
+frame = 3
+
+[node name="noice" parent="." instance=ExtResource( 8 )]
+visible = false
 
 [node name="music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 13 )
 volume_db = -10.0
 autoplay = true
 script = ExtResource( 14 )

@@ -2,6 +2,7 @@ extends Node2D
 
 
 export var num_enemies = 3
+export var enemy_dificulty = 0
 
 #array de enemigos
 var Enemy = preload("res://enemy/enemy.tscn")
@@ -10,12 +11,16 @@ var enemies = []
 #jugador
 onready var player = $player
 
+#cuando no hay nadie más vivo
+signal end_of_game(type) #type es "win" o "lose"
+
 func _ready():
 	var last_pos = $enemy_start_pos.position
 	for i in range(0,num_enemies):
 		var enemy = Enemy.instance()
 		add_child(enemy)
 		enemy.position = last_pos
+		enemy.dificultad = enemy_dificulty
 		last_pos.x += 127 + 10 #tamaño + margen
 		enemies.append(enemy)
 
@@ -32,19 +37,23 @@ func move_enemies():
 	var last_pos = $enemy_start_pos.position
 	if enemies.size() > 0:
 		for i in enemies:
-			$Tween.interpolate_property(i, "position",
-					i.position, last_pos, 1,
-					Tween.TRANS_EXPO, Tween.EASE_OUT)
-			$Tween.start()
-			last_pos.x += 127 + 10 #tamaño + margen
+			if i != null:
+				$Tween.interpolate_property(i, "position",
+						i.position, last_pos, 1,
+						Tween.TRANS_EXPO, Tween.EASE_OUT)
+				$Tween.start()
+				last_pos.x += 127 + 10 #tamaño + margen
 		
 
 
 #inicia un turno luego de seleccionar una carta
 func turno(carta):
+	
 	player.attack(carta.puntos)
 	yield(get_tree().create_timer(0.2), "timeout")
-	var enemy_roll = enemies[0].attack()
+	var enemy_roll
+	if enemies.size() != 0: enemy_roll = enemies[0].attack()
+	else: enemy_roll = 0
 	yield(get_tree().create_timer(0.5), "timeout")
 	$bubble.appear()
 	randomize_bubble()
@@ -67,7 +76,7 @@ func turno(carta):
 	if carta.nombre == "atomico":
 		randomize()
 		var porcentage = rand_range(0,100)
-		if porcentage > 30:
+		if porcentage < 30:
 			player.damage(3)
 	
 	
@@ -80,7 +89,7 @@ func turno(carta):
 		
 		
 	#gana el jugador
-	elif diferencia > 0:
+	elif diferencia > 0 and enemies.size() != 0:
 		$AnimationPlayer.play("enemy")
 		yield(get_tree().create_timer(0.3), "timeout")
 		enemies[0].damage(abs(diferencia))
@@ -95,16 +104,17 @@ func turno(carta):
 	if carta.fulldamage != 0:
 		var primera_vez = true
 		var deads = []
+		var index = 0
 		for i in enemies:
 			if !primera_vez:
 				i.damage(carta.fulldamage)
 				if i.vida <= 0:
-					deads.append(i)
+					deads.append([i,index])
 			primera_vez = false
 		for i in deads:
-			i.die()
+			enemies.pop_at(i[1])
+			i[0].die()
 			yield(get_tree().create_timer(0.5), "timeout")
-			enemies.pop_front()
 			move_enemies()
 			yield(get_tree().create_timer(0.1), "timeout")
 	
@@ -113,6 +123,12 @@ func turno(carta):
 	if player.vida > 0: player.end_attack()
 	if enemies.size() > 0:
 		if enemies[0].vida > 0: enemies[0].end_attack()
+	
+	if enemies.size() == 0:
+		emit_signal("end_of_game","win")
+	if player.vida <= 0:
+		emit_signal("end_of_game","lose")
+	
 	$bubble.disapear()
 	
 	

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://cards/CardManager.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/music/HoliznaCC0 - Swingin' Richards.mp3" type="AudioStream" id=2]
+
+[node name="level3" instance=ExtResource( 1 )]
+next_level = "res://intermissions/final.tscn"
+
+[node name="BattleManager" parent="." index="1"]
+num_enemies = 5
+enemy_dificulty = 2
+
+[node name="text1" parent="." index="3"]
+visible = false
+
+[node name="text2" parent="." index="4"]
+visible = false
+
+[node name="text3" parent="." index="5"]
+visible = false
+
+[node name="grain" parent="." index="7"]
+frame = 4
+
+[node name="music" parent="." index="9"]
+stream = ExtResource( 2 )

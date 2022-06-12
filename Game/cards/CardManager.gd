@@ -1,7 +1,11 @@
 extends Node2D
 
+export(String, FILE) var next_level = ""
+
 #array de 4 valores, va a tener las cartas del usuario
 var mazo_cartas = []
+var cuenta_pedir = 0
+var maximo_pedir = 5
 
 #mazos con cartas de cada tipo
 var cartas_verdes = []
@@ -98,7 +102,7 @@ func rellenar_cartas():
 	var atomico = inicializar_carta("atomico",
 									"res://assets/sprites/cards/atomico.png",
 									6,
-									-4,
+									0,
 									0)
 	var ss = inicializar_carta("ss",
 									"res://assets/sprites/cards/ss.png",
@@ -170,10 +174,10 @@ func get_id():
 func get_carta():
 	
 	#probabilidades de obtener cada tipo de carta
-	var prob_verde = [0,40]
-	var prob_rojo = [40,65]
+	var prob_verde = [0,35]
+	var prob_rojo = [35,65]
 	var prob_azul = [65,80]
-	var prob_morado = [80,98]
+	var prob_morado = [80,96]
 	var prob_leg = [95,100]
 	
 	randomize()
@@ -282,6 +286,11 @@ func click_carta(id):
 		enable_cards()
 		in_turno = false
 
+func end_of_game(type):
+	if type == "win":
+		$noice.noice(next_level)
+	elif type == "lose":
+		$noice.noice("res://menu.tscn")
 
 func _ready():
 	Transition.fade_out()
@@ -290,10 +299,27 @@ func _ready():
 	mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
 	update_cards(mazo_cartas)
 	enable_cards()
+	
+	battle_manager.connect("end_of_game", self, "end_of_game")
 
 
 
-#debig para cambiar las cartas
+#pedir carta
 func _on_textura_pressed():
-	mazo_cartas = [get_carta(),get_carta(),get_carta(),get_carta()]
-	update_cards(mazo_cartas)
+	if cuenta_pedir <= maximo_pedir and !in_turno:
+		randomize()
+		var id = mazo_cartas[randi() % mazo_cartas.size()].id
+		var card_index = find_card_by_id(id)
+		var card_node = get_card_node(id)
+		if card_node != null:
+			cards_node.remove_child(card_node)
+			card_node.queue_free()
+		
+		#la sacamos del mazo y metemos una nueva
+		mazo_cartas.pop_at(card_index)
+		mazo_cartas.push_back(get_carta())
+		cuenta_pedir += 1
+		
+		
+		update_cards(mazo_cartas)
+		enable_cards()
